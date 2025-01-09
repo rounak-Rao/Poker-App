@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Table</title>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Poker Table</h1>
+
+    <!-- Game State Display -->
+    <div id="game-board">
+        <pre id="game-state">Game state will appear here.</pre>
+    </div>
+
+    <!-- Player Creation -->
+    <div id="player-creation">
+        <h2>Create a Player</h2>
+        <label for="player-name">Name:</label>
+        <input type="text" id="player-name" placeholder="Enter player name">
+        <br>
+        <label for="player-stack">Stack:</label>
+        <input type="number" id="player-stack" placeholder="Enter stack value">
+        <br>
+        <button id="create-player">Create Player</button>
+    </div>
+
+    <script>
+        // Initialize Socket.IO
+        const socket = io();
+
+        // Update Game State
+        socket.on('game_update', (state) => {
+            document.getElementById('game-state').innerText = JSON.stringify(state, null, 2);
+        });
+
+        // Handle Player Creation
+        document.getElementById('create-player').addEventListener('click', () => {
+            const name = document.getElementById('player-name').value.trim();
+            const stack = parseInt(document.getElementById('player-stack').value);
+
+            if (name && stack && stack > 0) {
+                // Emit 'create_player' event with player details
+                socket.emit('create_player', { name, stack });
+            } else {
+                alert('Please enter a valid name and stack value.');
+            }
+        });
+
+        // Handle Player Created Response
+        socket.on('player_created', (player) => {
+            console.log('Player created:', player);
+            alert(`Player "${player.name}" created with a stack of ${player.stack}`);
+        });
+
+        // Handle Errors
+        socket.on('error', (error) => {
+            alert(error.message);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+from deck import *
+from player import *
+from betting import *
+from winner import *
+
+class GameManager:
+    def __init__(self) -> None:
+        self.players = []
+        self.game_state = 'waiting'
+        self.community_cards = []

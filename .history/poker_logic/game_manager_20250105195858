@@ -1,0 +1,37 @@
+from deck import *
+from player import *
+from betting import *
+from winner import *
+
+class GameManager:
+    def __init__(self) -> None:
+        self.players = []
+        self.game_state = 'waiting' # waiting/ playing/ finished
+        self.community_cards = []
+        self.deck
+
+    def create_player(self, stack, name):
+        if len(self.players) < 9:
+            p = Player(stack, name, len(self.players))
+            self.players.append(p)
+            return p
+        return None
+    
+    def deal_cards(self):       
+        for i in range(2):
+            for p in self.players:
+                card = deck.deal()
+                p.deal_cards(card)
+
+
+    
+    def start_game(self):
+        if len(self.players)<2:
+            return {'cannot start game with less than 2 players'}
+        self.game_state = 'playing'
+        self.deal_cards()
+
+    
+
+   
+        

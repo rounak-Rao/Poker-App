@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #4f0000;
+    color: #370b0b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.table {
+    width: 80vw;
+    height: 80vh;
+    background-color: #4e5b61;
+    position: relative;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.header {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.blinds {
+    font-size: 1.5rem;
+}
+
+.seats {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.seat {
+    width: 120px;
+    height: 40px;
+    background-color: #3e4e5e;
+    color: #ffffff;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 5px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+
+.seat:hover {
+    background-color: #5cb85c;
+}
+
+/* Seat positions */
+.top-left { top: 5%; left: 20%; }
+.top-center { top: 2%; left: 50%; }
+.top-right { top: 5%; right: 20%; }
+.middle-top-left { top: 27%; left: 10%; }
+.middle-top-right { top: 27%; right: 10%; }
+.middle-left { top: 50%; left: 2%; }
+.middle-right { top: 57%; right: 2%; }
+.bottom-left { bottom: 5%; left: 20%; }
+.bottom-center { bottom: 2%; left: 50%; }
+.bottom-right { bottom: 5%; right: 20%; }
+
+/* Center message */
+.center-message {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+}
+
+.center-message p {
+    font-size: 1.5rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #4e5b61;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+}
+
+.modal input {
+    background-color: #5f6d6b;
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    width: 80%;
+}
+
+.modal button {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal button:hover {
+    background-color: #218838;
+}

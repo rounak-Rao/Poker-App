@@ -1,0 +1,40 @@
+
+
+
+
+<--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Table</title>
+</head>
+<body>
+    <h1>Poker Table</h1>
+    <div id="game-board">
+        <p>Game will appear here.</p>
+    </div>
+    <script src="/static/js/socket.io.min.js"></script>
+    <script>
+        var socket = io();
+        socket.on('update', function(data) {
+            console.log('Game state updated:', data);
+        });
+    </script>
+</body>
+</html>
+
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script>
+    var socket = io();
+
+    // Send a test message to the server
+    socket.emit('message', 'Hello from the game page!');
+
+    // Listen for updates from the server
+    socket.on('update', function(data) {
+        console.log('Game state updated:', data);
+    });
+</script>
+

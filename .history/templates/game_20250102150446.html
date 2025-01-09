@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Table</title>
+</head>
+<body>
+    <h1>Poker Table</h1>
+    <div id="game-board">
+        <p>Game will appear here.</p>
+    </div>
+    <script src="/static/js/socket.io.min.js"></script>
+    <script>
+        var socket = io();
+        socket.on('update', function(data) {
+            console.log('Game state updated:', data);
+        });
+    </script>
+</body>
+</html>
+
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script>
+    var socket = io();
+
+    // Send a test message to the server
+    socket.emit('message', 'Hello from the game page!');
+
+    // Listen for updates from the server
+    socket.on('update', function(data) {
+        console.log('Game state updated:', data);
+    });
+</script>
+<script>
+    const socket = io();
+
+    // Update Game State
+    socket.on('game_update', (state) => {
+        document.getElementById('game-state').innerText = JSON.stringify(state, null, 2);
+    });
+
+    // Handle Player Creation
+    document.getElementById('create-player').addEventListener('click', () => {
+        const name = document.getElementById('player-name').value;
+        const stack = document.getElementById('player-stack').value;
+        if (name && stack) {
+            socket.emit('create_player', { name: name, stack: parseInt(stack) });
+        }
+    });
+
+    // Handle Player Created Response
+    socket.on('player_created', (player) => {
+        console.log('Player created:', player);
+    });
+
+    // Handle Errors
+    socket.on('error', (error) => {
+        alert(error.message);
+    });
+</script>
