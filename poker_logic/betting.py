@@ -9,9 +9,7 @@ class Betting:
         self.sb = sb
         self.bb = bb
         self.current_bet = bb
-        self.side_pot = []
         self.players_in_hand = [player for player in players if player.is_active or player.all_in]
-        self.community_cards = []
 
     def collect_blinds(self):
         # Collecting blinds from the first two players (SB and BB)
@@ -53,9 +51,14 @@ class Betting:
         while True:
             try:
                 raise_amt = float(input(f"Enter raise amount (minimum {self.current_bet * 2}): "))
-                if raise_amt < self.current_bet * 2 <= player.stack:
-                    print('Raise must be at least double the current bet.')
-                    continue
+                if self.current_bet != 0:
+                    if raise_amt < self.current_bet * 2 <= player.stack:
+                        print('Raise must be at least double the current bet.')
+                        continue
+                elif self.current_bet == 0:
+                    if raise_amt < self.bb <= player.stack:
+                        print(f'Raise must be at least {self.bb}.')
+                        continue
                 elif raise_amt >= player.stack:
                     raise_amt = player.stack + player.bet
                 actual_raise = raise_amt - player.bet
@@ -176,7 +179,10 @@ class Betting:
     def reset_bet(self):
         self.current_bet = 0
         for player in self.players:
-            player.bet = 0
+            player.reset()
+        self.active_players = self.players
+        self.players_in_hand = self.players
+
 
 
 if __name__ == '__main__':

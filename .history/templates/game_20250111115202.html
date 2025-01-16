@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game</title>
+    <link rel="stylesheet" href="static/css/game.css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="table">         
+            <div class="seats">
+                <div class="seat top-left" data-seat="1">
+                    Seat 1                  
+                </div>
+                
+                <div class="seat top-center" data-seat="2">
+                    Seat 2                   
+                </div>
+                <div class="seat top-right" data-seat="3">
+                    Seat 3
+                </div>
+                <div class="seat middle-top-right" data-seat="4">
+                    Seat 4
+                </div>
+                <div class="seat middle-right" data-seat="5">Seat 5
+                </div>   
+                <div class="seat bottom-right" data-seat="6">Seat 6
+                </div>       
+                <div class="seat bottom-center" data-seat="7">Seat 7
+                    <span>Seat 7</span>
+                    <div class="card-container"></div>
+                </div>
+                <div class="seat bottom-left" data-seat="8">Seat 8
+                    <span>Seat 8</span>
+                    <div class="card-container"></div>
+                </div>
+                <div class="seat middle-left" data-seat="9">Seat 9
+                    <span>Seat 9</span>
+                    <div class="card-container"></div>
+                </div>  
+                <div class="seat middle-top-left" data-seat="10">Seat 10
+                    <span>Seat 10</span>
+                    <div class="card-container"></div>
+                </div>              
+            </div>
+            <div class="center-message">
+                <h1>BAP</h1>
+                <p>Blinds: 1/2</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to enter name and stack -->
+    <div class="modal" id="joinModal">
+        <div class="modal-content">
+            <h2>Join Seat</h2>
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" placeholder="Enter name">
+            <label for="stack">Your Stack:</label>
+            <input type="number" id="stack" placeholder="Enter stack amount">
+            <button id="joinBtn">Join</button>
+        </div>
+    </div>
+
+    <div class = 'host panel'>
+        <button id = 'start-end-game-btn' class = 'start-btn'>Start Game</button>
+    </div>
+
+    <script src="static/js/game.js"></script>
+ 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--
+    <script>
+        var socket = io();
+
+        socket.emit('message', 'Hello from the game page!');
+        socket.on('update', function(data) {
+            console.log('Game state updated:', data);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const seats = document.querySelectorAll(".seat");
+            const joinModal = document.getElementById("joinModal");
+            const joinBtn = document.getElementById("joinBtn");
+            const nameInput = document.getElementById("name");
+            const stackInput = document.getElementById("stack");
+            let selectedSeat = null;
+
+            seats.forEach(seat => {
+                seat.addEventListener("click", () => {
+                    if (!seat.classList.contains('occupied')) {
+                        selectedSeat = seat;
+                        joinModal.style.display = "flex";
+                    }
+                });
+            });
+
+            joinBtn.addEventListener("click", () => {
+                const name = nameInput.value;
+                const stack = stackInput.value;
+
+                if (name && stack) {
+                    selectedSeat.textContent = `${name} - $${stack}`;
+                    selectedSeat.style.backgroundColor = "#5cb85c";
+                    selectedSeat.classList.add('occupied')
+                    joinModal.style.display = "none";
+
+                    socket.emit('join_seat', {
+                        seat: selectedSeat.dataset.seat,
+                        name: name,
+                        stack: stack
+                    });
+
+                    nameInput.value = "";
+                    stackInput.value = "";
+                } else {
+                    alert("Please enter both name and stack.");
+                }
+            });
+
+            window.addEventListener("click", (e) => {
+                if (e.target === joinModal) {
+                    joinModal.style.display = "none";
+                }
+            });
+        });
+    </script>
+     Modal to enter name and stack -->
