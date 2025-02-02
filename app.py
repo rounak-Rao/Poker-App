@@ -96,5 +96,26 @@ def handle_seat(player_info: dict):
         # Send an error message to the client who tried to join
         socketio.emit('error', {'message': 'Seat is already occupied or invalid stack.'})
 
+
+@socketio.on('set_blinds')
+def handle_set_blinds(data):
+    try:
+        small_blind = data['small']
+        big_blind = data['big']
+
+        # Update the game manager with the new blind values
+        game_manager.initialize_game(small_blind, big_blind)
+
+        emit('success', {'message': 'Blinds set successfully!'}, to = None)
+    except Exception as e:
+        emit('error', {'message': str(e)})
+
+@socketio.on('request_game_state')
+def handle_game_state_request():
+    # Assuming you have a way to track the game state
+    game_state = game_manager.get_game_state()
+    emit('game_state', game_state)  # Send to the frontend
+
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)

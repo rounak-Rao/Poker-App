@@ -174,3 +174,142 @@ h1 {
     border-radius: 4px;       /* Optional: Add rounded corners */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); /* Add a shadow for effect */
 }
+
+/* Style for action container */
+.game-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+#action-container {
+    background-color: #2c3e50;
+    padding: 20px;
+    display: flex;
+    gap: 10px; /* Spacing between buttons */
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Align buttons vertically */
+}
+
+/* Style for buttons */
+.action-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: #2980b9;
+}
+
+.action-btn:active {
+    background-color: #1c598a;
+}
+
+/* Style for raise container */
+#raise-container {
+    margin-top: 10px;
+    background-color: #34495e;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#raise-slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#raise-amount {
+    width: 80px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+}
+
+/* Host panel container */
+
+.set-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.set-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Start Game button */
+.start-btn {
+    background-color: #27ae60; /* Green background */
+    color: white; /* White text */
+    font-size: 18px; /* Slightly larger text */
+    font-weight: bold; /* Bold text for emphasis */
+    border: none; /* Remove default borders */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px 24px; /* Add padding for better size */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect */
+.start-btn:hover {
+    background-color: #229954; /* Darker green on hover */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Active (pressed) effect */
+.start-btn:active {
+    background-color: #1e8449; /* Even darker green when pressed */
+    transform: scale(0.95); /* Slightly shrink button */
+}
+
+/* Add focus outline for accessibility */
+.start-btn:focus {
+    outline: 3px solid #82e0aa; /* Light green focus outline */
+    outline-offset: 2px;
+}
+
+#set-blinds-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between the inputs and the button */
+    margin-top: 10px;
+}
+
+.blinds-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between the small blind and big blind inputs */
+}
+
+#set-blinds-container input {
+    padding: 5px;
+    font-size: 16px;
+    width: 150px;
+}
+
+#set-blinds-btn {
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+}
+
+#set-blinds-btn:hover {
+    background-color: #0056b3;
+}

@@ -10,6 +10,8 @@ class Betting:
         self.bb = bb
         self.current_bet = bb
         self.players_in_hand = [player for player in players if player.is_active or player.all_in]
+        self.current_player_index = 0
+        self.cycle_completed = False
 
     def collect_blinds(self):
         # Collecting blinds from the first two players (SB and BB)
@@ -47,91 +49,51 @@ class Betting:
             print(f"{player.name} checks.")
 
 
-    def handle_raise(self, player):
-        while True:
-            try:
-                raise_amt = float(input(f"Enter raise amount (minimum {self.current_bet * 2}): "))
-                if self.current_bet != 0:
-                    if raise_amt < self.current_bet * 2 <= player.stack:
-                        print('Raise must be at least double the current bet.')
-                        continue
-                elif self.current_bet == 0:
-                    if raise_amt < self.bb <= player.stack:
-                        print(f'Raise must be at least {self.bb}.')
-                        continue
-                elif raise_amt >= player.stack:
-                    raise_amt = player.stack + player.bet
-                actual_raise = raise_amt - player.bet
-                player.check_bet(actual_raise)
-                self.pot += actual_raise
-                if not player.all_in:
-                    print(f"{player.name} raises to {raise_amt}")
-                elif player.all_in:
-                    print(f"{player.name} goes all in with {raise_amt}")
-                self.current_bet = raise_amt
-                if player.stack == 0:
-                    player.is_active = False
-                    player.all_in = True
-                break
-            except ValueError:
-                print("Invalid amount, try again.")
+    def handle_raise(self, player, amt):
+
+            min_raise = max(self.current_bet * 2, self.bb)
+            if amt < min_raise and amt < player.stack:
+                raise ValueError("Raise amount is too low")
+            elif amt >= player.stack:
+                amt = player.stack + player.bet
+            actual_raise = amt - player.bet
+            player.check_bet(actual_raise)
+            self.pot += actual_raise
+            self.current_bet = amt
+            if player.stack == 0:
+                player.is_active = False
+                player.all_in = True
+
 
     def handle_fold(self, player):
         player.fold()
-        print(f"{player.name} folds")
         self.check_active()  # Remove folded players immediately
 
-    def betting_round(self, index):
-        i = index # Start after the blinds
-        cycle = False
-        while True:
-            player = self.active_players[i]
-            
-            # Skip inactive players
-            if not player.is_active:
-                i = (i + 1) % len(self.active_players)
-                continue
 
-            if player.bet != self.current_bet:
-                print(f"{player.name}, your action (Call, Raise, Fold) (Call/Raise/Fold): ")
-            elif player.bet == self.current_bet:
-                print(f"{player.name}, your action (Check, Raise) (Check/Raise): ")
+    def handle_action(self, player, action, amt = None):
+        if action == "CALL":
+            self.handle_call(player)
+        elif action == "RAISE":
+            self.handle_raise(player, amt)
+        elif action == "FOLD":
+            self.handle_fold(player)
+        elif action == "CHECK":
+            print(f"{player.name} checks")
 
-            action = input().strip().upper()
+    def start_betting_round(self, index):
+        self.current_player_index = index
+        return self.active_players[index]
 
-            # Get player action
-            if player.bet != self.current_bet:
-                if action not in ['CALL', 'RAISE', 'FOLD']:
-                    print("Invalid action, please try again.")
-                    continue
-            elif player.bet == self.current_bet:
-                if action not in ['CHECK', 'RAISE']:
-                    print("Invalid action, please try again.")
-                    continue
-            # Handle Call
-            if action == 'CALL':
-                self.handle_call(player)
-            
-            elif action == 'RAISE':
-                self.handle_raise(player)
+    def advance_turn(self):
+        self.current_player_index = (self.current_player_index + 1) % len(self.active_players)
+        if self.current_player_index == 0:
+            self.cycle_completed = True
 
-            elif action == 'FOLD':
-                self.handle_fold(player)
-                i-=1
-
-            elif action == 'CHECK':
-                print(f'{player.name} checks')
-
-            if len(self.active_players) > 0:
-                if i == len(self.active_players)-1 :
-                    cycle = True
-                i = (i + 1) % len(self.active_players)
-
-            active_bets = [p.bet for p in self.active_players if p.is_active]
-            if all(bet == self.current_bet for bet in active_bets) and cycle == True:
-                break
-
-        self.post_round()
+    def check_end_betting_round(self):
+        active_bets = [p.bet for p in self.active_players if p.is_active]
+        if all(bet == self.current_bet for bet in active_bets) and self.cycle_completed == True:
+            return True
+        return False
 
 
     def post_round(self):
@@ -171,11 +133,6 @@ class Betting:
         top_player = stacks[-1]
         return top_player, bet_to_return
 
-    def preflop(self):
-        print('this is the preflop round')
-        self.betting_round(2)
-        print(f"Preflop round complete. Pot: {self.pot}")
-
     def reset_bet(self):
         self.current_bet = 0
         for player in self.players:
@@ -196,7 +153,6 @@ if __name__ == '__main__':
     test = Betting(players, 5, 10)
     test.collect_blinds()
     test.print_players()
-    test.preflop()
     test.print_players()
     for player in test.players:
         print(f'name: {player.name}, max win amt: {player.max_win}')

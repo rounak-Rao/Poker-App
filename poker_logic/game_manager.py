@@ -40,9 +40,9 @@ class GameManager:
     
     def get_game_state(self):
         return {
-            "players": [{"name": p.name, "stack": p.stack} for p in self.players],
-            "game_state": self.game_state,
-            "community_cards": self.community_cards,
+            'current_seat': self.players[0].seat,
+            'current_bet': self.bet,
+            'player_stack': self.players[0].stack
         }
 
     def end_game(self):
@@ -54,9 +54,7 @@ class GameManager:
         self.game_state = 'playing'
         return True
     
-    def initialize_game(self):
-        sb = int(input('enter small blind value: '))
-        bb = int(input('enter bb value: '))
+    def initialize_game(self, sb, bb):
         self.sb = sb
         self.bb = bb
 
@@ -129,6 +127,9 @@ class GameManager:
                             p.stack += pot
                             pot = 0
                 i += 1
+
+    def handle_action(self, action, amount=0):
+        return self.bet.handle_action(self.bet.current_player_index, action, amount)
 
 
     def reset_values(self):

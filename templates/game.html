@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poker Game</title>
-    <link rel="stylesheet" href="static/css/game.css">
+    <link rel="stylesheet" href="/static/css/game.css">
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
 </head>
 <body>
@@ -39,7 +39,7 @@
             </div>
             <div class="center-message">
                 <h1>BAP</h1>
-                <p>Blinds: 1/2</p>
+                <p id = "blind-display">Blinds: 1/2</p>
             </div>
         </div>
     </div>
@@ -58,90 +58,33 @@
 
     <div class = 'host panel'>
         <button id = 'start-end-game-btn' class = 'start-btn'>Start Game</button>
+        <div id = "set-blinds-container" class="set-blinds">
+            <div class="blinds-inputs">
+                <input type="number" placeholder="Small Blind" min = '0.1' id="small-blind">
+                <input type="number" placeholder="Big Blind" min = '0.2' id="big-blind">
+            </div>
+        <button id="set-blinds-btn" class="set-btn">Set Blinds</button>
+        </div>
     </div>
 
-    <script src="static/js/game.js"></script>
- 
+<div class="game-controls">
+    <div id="action-container" style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+        <!-- Buttons for player actions -->
+        <button id="check-btn" class="action-btn">Check</button>
+        <button id="call-btn" class="action-btn">Call</button>
+        <button id="raise-btn" class="action-btn">Raise</button>
+        <button id="fold-btn" class="action-btn">Fold</button>
+
+        <!-- Raise amount slider and input -->
+        <div id="raise-container" style="display: none; flex-direction: column; align-items: center; gap: 5px;">
+            <label for="raise-slider">Raise Amount:</label>
+            <input type="range" id="raise-slider" min="0" max="100" step="1" />
+            <input type="number" id="raise-amount" value="0"/>
+            <button id="confirm-raise" class="action-btn">Confirm Raise</button>
+        </div>
+    </div>
+</div>
+
 </body>
+ <script src="/static/js/game.js"></script>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--
-    <script>
-        var socket = io();
-
-        socket.emit('message', 'Hello from the game page!');
-        socket.on('update', function(data) {
-            console.log('Game state updated:', data);
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const seats = document.querySelectorAll(".seat");
-            const joinModal = document.getElementById("joinModal");
-            const joinBtn = document.getElementById("joinBtn");
-            const nameInput = document.getElementById("name");
-            const stackInput = document.getElementById("stack");
-            let selectedSeat = null;
-
-            seats.forEach(seat => {
-                seat.addEventListener("click", () => {
-                    if (!seat.classList.contains('occupied')) {
-                        selectedSeat = seat;
-                        joinModal.style.display = "flex";
-                    }
-                });
-            });
-
-            joinBtn.addEventListener("click", () => {
-                const name = nameInput.value;
-                const stack = stackInput.value;
-
-                if (name && stack) {
-                    selectedSeat.textContent = `${name} - $${stack}`;
-                    selectedSeat.style.backgroundColor = "#5cb85c";
-                    selectedSeat.classList.add('occupied')
-                    joinModal.style.display = "none";
-
-                    socket.emit('join_seat', {
-                        seat: selectedSeat.dataset.seat,
-                        name: name,
-                        stack: stack
-                    });
-
-                    nameInput.value = "";
-                    stackInput.value = "";
-                } else {
-                    alert("Please enter both name and stack.");
-                }
-            });
-
-            window.addEventListener("click", (e) => {
-                if (e.target === joinModal) {
-                    joinModal.style.display = "none";
-                }
-            });
-        });
-    </script>
-     Modal to enter name and stack -->
